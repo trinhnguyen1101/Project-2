@@ -214,7 +214,6 @@ CREATE TABLE fact_financial_metrics (
 
     current_ratio               NUMERIC,
     quick_ratio                 NUMERIC,
-    cash_ratio                  NUMERIC,
     working_capital             NUMERIC,
 
     gross_margin                NUMERIC,
@@ -225,15 +224,11 @@ CREATE TABLE fact_financial_metrics (
 
     debt_to_equity              NUMERIC,
     debt_to_assets              NUMERIC,
-    liabilities_to_assets       NUMERIC,
     interest_coverage           NUMERIC,
 
     revenue_growth_yoy          NUMERIC,
-    revenue_growth_qoq          NUMERIC,
     net_income_growth_yoy       NUMERIC,
     asset_growth_yoy            NUMERIC,
-    asset_turnover              NUMERIC,
-    inventory_turnover          NUMERIC,
 
     retained_earnings_to_assets NUMERIC,
     ebit_to_assets              NUMERIC,
@@ -290,14 +285,9 @@ CREATE TABLE fact_industry_benchmark (
 
     company_count              INTEGER,
 
-    current_ratio_avg          NUMERIC,
     current_ratio_median       NUMERIC,
-    current_ratio_p25          NUMERIC,
-    current_ratio_p75          NUMERIC,
 
-    roe_avg                    NUMERIC,
     roe_median                 NUMERIC,
-    debt_to_assets_avg         NUMERIC,
     debt_to_assets_median      NUMERIC,
     altman_z_score_median      NUMERIC,
     distress_rate              NUMERIC,
