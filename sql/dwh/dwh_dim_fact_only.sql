@@ -19,7 +19,6 @@ DROP TABLE IF EXISTS fact_industry_benchmark CASCADE;
 DROP TABLE IF EXISTS fact_health_score CASCADE;
 DROP TABLE IF EXISTS fact_financial_metrics CASCADE;
 DROP TABLE IF EXISTS dim_raw_financials CASCADE;
-DROP TABLE IF EXISTS dim_metric_definition CASCADE;
 DROP TABLE IF EXISTS dim_concept CASCADE;
 DROP TABLE IF EXISTS dim_filing CASCADE;
 DROP TABLE IF EXISTS dim_quarter CASCADE;
@@ -166,16 +165,6 @@ CREATE TABLE dim_concept (
     CONSTRAINT ck_concept_normal_balance CHECK (
         normal_balance IN ('debit', 'credit') OR normal_balance IS NULL
     )
-);
-
-CREATE TABLE dim_metric_definition (
-    metric_key          SERIAL PRIMARY KEY,
-    metric_code         VARCHAR(80) UNIQUE NOT NULL,
-    metric_group        VARCHAR(40) NOT NULL,
-    formula             TEXT,
-    good_threshold      TEXT,
-    warning_threshold   TEXT,
-    description         TEXT
 );
 
 -- Raw SEC numeric values kept as dim by project convention.
@@ -378,7 +367,6 @@ COMMENT ON TABLE dim_year IS 'Fiscal year dimension used for year-level trend an
 COMMENT ON TABLE dim_quarter IS 'Fiscal quarter/reporting period dimension based on SEC ddate/report period end, fp, and qtrs.';
 COMMENT ON TABLE dim_filing IS 'SEC filing dimension from sub data. Filing key is adsh.';
 COMMENT ON TABLE dim_concept IS 'XBRL concept metadata and standard tag mapping.';
-COMMENT ON TABLE dim_metric_definition IS 'Metric formulas, groups, and threshold metadata. Metric values are stored in fact tables.';
 COMMENT ON TABLE dim_raw_financials IS 'Raw SEC numeric values from num data at filing-concept-period-qtrs-uom-coreg grain.';
 COMMENT ON TABLE fact_financial_metrics IS 'Calculated company-period financial ratios for trend analysis.';
 COMMENT ON TABLE fact_health_score IS 'Calculated health score and Altman Z-Score components.';
