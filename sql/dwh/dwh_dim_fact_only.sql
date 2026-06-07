@@ -193,7 +193,7 @@ CREATE TABLE fact_financial_metrics (
     quarter_key                 BIGINT NOT NULL REFERENCES dim_quarter(quarter_key),
     filing_key                  VARCHAR NOT NULL REFERENCES dim_filing(filing_key),
 
-    currency_uom                TEXT DEFAULT 'USD',
+    currency_uom                TEXT,
 
     current_ratio               NUMERIC,
     quick_ratio                 NUMERIC,
@@ -351,21 +351,3 @@ CREATE INDEX idx_fact_risk_company_quarter ON fact_risk_signal(company_key, quar
 CREATE INDEX idx_fact_risk_distress ON fact_risk_signal(distress_flag);
 CREATE INDEX idx_fact_risk_level ON fact_risk_signal(risk_level);
 
--- ============================================================
--- 4. TABLE COMMENTS
--- ============================================================
-
-COMMENT ON TABLE dim_company IS 'SCD Type 2 company dimension. CIK is the business key; company_key is the surrogate version key.';
-COMMENT ON TABLE dim_year IS 'Fiscal year dimension used for year-level trend analysis.';
-COMMENT ON TABLE dim_quarter IS 'Fiscal quarter/reporting period dimension based on SEC ddate/report period end, fp, and qtrs.';
-COMMENT ON TABLE dim_filing IS 'SEC filing dimension from sub data. Filing key is adsh.';
-COMMENT ON TABLE dim_concept IS 'XBRL concept metadata and standard tag mapping.';
-COMMENT ON TABLE dim_raw_financials IS 'Raw SEC numeric values from num data at filing-concept-period-qtrs-uom grain.';
-COMMENT ON TABLE fact_financial_metrics IS 'Calculated company-period financial ratios for trend analysis.';
-COMMENT ON TABLE fact_health_score IS 'Calculated health score and Altman Z-Score components.';
-COMMENT ON TABLE fact_industry_benchmark IS 'Calculated sector/SIC peer benchmarks by period.';
-COMMENT ON TABLE fact_risk_signal IS 'Business early-warning risk signals, excluding ML labels.';
-
--- ============================================================
--- END OF FILE
--- ============================================================
