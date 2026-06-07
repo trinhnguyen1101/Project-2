@@ -70,8 +70,6 @@ CREATE TABLE dim_company (
     company_key     BIGSERIAL PRIMARY KEY,
     cik             BIGINT NOT NULL,
     name            TEXT NOT NULL,
-    ticker          TEXT,
-    exchange_name   TEXT,
     industry_key    INTEGER REFERENCES dim_industry(industry_key),
 
     countryba       TEXT,
@@ -139,8 +137,6 @@ CREATE TABLE dim_filing (
     report_period_end   DATE,
     fy                  INTEGER,
     fp                  VARCHAR(10),
-    prevrpt             BOOLEAN,
-    amendment_flag      BOOLEAN DEFAULT FALSE,
     nciks               SMALLINT,
     is_latest_filing    BOOLEAN DEFAULT TRUE,
     load_date           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -179,14 +175,12 @@ CREATE TABLE dim_raw_financials (
     value           NUMERIC,
     qtrs            SMALLINT,
     uom             TEXT NOT NULL,
-    coreg           TEXT NOT NULL DEFAULT '',
-    decimals        INTEGER,
 
     is_adjusted     BOOLEAN NOT NULL DEFAULT FALSE,
     load_date       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT uq_dim_raw_financials_num_grain UNIQUE (
-        filing_key, concept_key, quarter_key, qtrs, uom, coreg
+        filing_key, concept_key, quarter_key, qtrs, uom
     )
 );
 
@@ -304,7 +298,6 @@ CREATE TABLE fact_risk_signal (
     leverage_trend                  VARCHAR(20),
     zscore_trend                    VARCHAR(20),
 
-    restatement_flag                BOOLEAN,
     negative_equity_flag            BOOLEAN,
     zscore_drop_flag                BOOLEAN,
 
@@ -367,7 +360,7 @@ COMMENT ON TABLE dim_year IS 'Fiscal year dimension used for year-level trend an
 COMMENT ON TABLE dim_quarter IS 'Fiscal quarter/reporting period dimension based on SEC ddate/report period end, fp, and qtrs.';
 COMMENT ON TABLE dim_filing IS 'SEC filing dimension from sub data. Filing key is adsh.';
 COMMENT ON TABLE dim_concept IS 'XBRL concept metadata and standard tag mapping.';
-COMMENT ON TABLE dim_raw_financials IS 'Raw SEC numeric values from num data at filing-concept-period-qtrs-uom-coreg grain.';
+COMMENT ON TABLE dim_raw_financials IS 'Raw SEC numeric values from num data at filing-concept-period-qtrs-uom grain.';
 COMMENT ON TABLE fact_financial_metrics IS 'Calculated company-period financial ratios for trend analysis.';
 COMMENT ON TABLE fact_health_score IS 'Calculated health score and Altman Z-Score components.';
 COMMENT ON TABLE fact_industry_benchmark IS 'Calculated sector/SIC peer benchmarks by period.';

@@ -61,18 +61,33 @@ AverageStockholdersEquity = (Equity_current + Equity_previous_period) / 2
 | `x1_working_capital_ratio` | `(AssetsCurrent - LiabilitiesCurrent) / Assets` |
 | `x2_retained_earnings_ratio` | `RetainedEarningsAccumulatedDeficit / Assets` |
 | `x3_ebit_ratio` | `EBIT / Assets` |
-| `x4_equity_liabilities_ratio` | `BookValueEquity / Liabilities` |
+| `x4_equity_liabilities_ratio` | `BookValueEquity / Liabilities` = `StockholdersEquity / Liabilities` |
 | `x5_sales_turnover` | `Revenues / Assets` |
-| `altman_z_score` | `1.2*x1 + 1.4*x2 + 3.3*x3 + 0.6*x4 + 1.0*x5` |
+| `altman_z_score` | Book-value Altman Z-Score: `1.2*x1 + 1.4*x2 + 3.3*x3 + 0.6*x4 + 1.0*x5` |
 | `financial_health_score` | Diem tong hop tu cac component score va `altman_z_score` |
 | `health_level` | Phan loai tu `altman_z_score` hoac `financial_health_score` |
 | `book_value_equity` | `StockholdersEquity` |
 
-Do DWH hien tai khong dung du lieu gia thi truong, Altman Z-Score nen dung bien the book-value:
+Altman Z-Score goc dung:
+
+```text
+X4 = MarketValueEquity / Liabilities
+```
+
+Nhung dataset hien tai chi co du lieu bao cao tai chinh SEC, khong co gia co phieu, market cap, hay market value equity. Vi vay DWH nay dung bien the book-value:
+
+```text
+X4 = BookValueEquity / Liabilities
+BookValueEquity = StockholdersEquity
+```
+
+Khi insert vao `fact_health_score`, luon gan:
 
 ```text
 z_score_version = 'book_value'
 ```
+
+Khong dung `z_score_version = 'original'` neu khong bo sung du lieu thi truong tu nguon ngoai.
 
 Nguong Altman tham khao:
 
@@ -81,6 +96,8 @@ Safe:      Z > 2.99
 Grey:      1.81 <= Z <= 2.99
 Distress:  Z < 1.81
 ```
+
+Luu y: do day la bien the book-value, khi bao cao nen ghi ro rang nguong tren la nguong tham khao, khong phai ket qua Altman goc dua tren market value.
 
 ## 3. `fact_industry_benchmark`
 

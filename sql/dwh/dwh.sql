@@ -289,7 +289,7 @@ CREATE TABLE fact_health_score (
     efficiency_score               NUMERIC,
 
     altman_z_score                 NUMERIC,
-    z_score_version                VARCHAR(30),       -- original, book_value, private
+    z_score_version                VARCHAR(30),       -- book_value, private
     financial_health_score         NUMERIC,
     health_level                   VARCHAR(20),       -- Safe, Grey, Distress
 
@@ -299,7 +299,6 @@ CREATE TABLE fact_health_score (
     x4_equity_liabilities_ratio    NUMERIC,
     x5_sales_turnover              NUMERIC,
 
-    market_value_equity            NUMERIC,
     book_value_equity              NUMERIC,
     calculation_batch_id           BIGINT,
     calculated_at                  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -310,7 +309,7 @@ CREATE TABLE fact_health_score (
         health_level IN ('Safe', 'Grey', 'Distress') OR health_level IS NULL
     ),
     CONSTRAINT ck_fact_zscore_version CHECK (
-        z_score_version IN ('original', 'book_value', 'private') OR z_score_version IS NULL
+        z_score_version IN ('book_value', 'private') OR z_score_version IS NULL
     )
 );
 
